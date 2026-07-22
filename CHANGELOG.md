@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Explain how shared conversion rules simplify defensive parsing of dynamic
+  and JSON-like data.
+- Rewrite package metadata around predictable null and fallback behavior.
+
 ## 0.1.1
 
 - Prove GitHub Actions OIDC publish path after Pub.dev Admin enablement.

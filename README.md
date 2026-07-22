@@ -3,6 +3,15 @@
 Safe parsing helpers for dynamic / JSON-like values. Dependency-free beyond the
 Dart SDK (`dart:developer` for parse failure logs).
 
+## Why use this package?
+
+- Replace repeated type checks in repositories, mappers, caches, and snapshot
+  readers with shared conversion rules.
+- Tolerate missing or unexpected values through predictable null and fallback
+  results.
+- Parse common scalar and collection shapes without coupling code to Flutter or
+  a serialization framework.
+
 License: [Apache-2.0](LICENSE). Issues:
 [github.com/redjadet/ilkersevim_safe_parse/issues](https://github.com/redjadet/ilkersevim_safe_parse/issues).
 
