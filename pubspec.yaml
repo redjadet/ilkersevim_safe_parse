@@ -2,7 +2,7 @@ name: ilkersevim_safe_parse
 description: >-
   Safe parsing helpers for dynamic / JSON-like values (string, int, bool,
   map, list) without throwing on unexpected shapes.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/redjadet/ilkersevim_safe_parse
 homepage: https://github.com/redjadet/ilkersevim_safe_parse
 issue_tracker: https://github.com/redjadet/ilkersevim_safe_parse/issues
