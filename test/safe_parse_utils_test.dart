@@ -125,6 +125,47 @@ void main() {
       expect(out, orderedEquals(<int>[1]));
     });
 
+    test('skips entries that throw FormatException during parsing', () {
+      final Map<String, dynamic> input = <String, dynamic>{
+        'a': <String, dynamic>{'v': 1},
+        'b': <String, dynamic>{'v': 'bad'},
+      };
+      final List<int> out = parseMapOfMaps<int>(
+        input,
+        logContext: 'test',
+        parseItem: (_, map) {
+          final Object? v = map['v'];
+          if (v is! int) {
+            throw const FormatException('Invalid payload');
+          }
+          return v;
+        },
+      );
+      expect(out, orderedEquals(<int>[1]));
+    });
+
+    test('failOnPartial throws when parseItem throws FormatException', () {
+      final Map<String, dynamic> input = <String, dynamic>{
+        'a': <String, dynamic>{'v': 1},
+        'b': <String, dynamic>{'v': 'bad'},
+      };
+      expect(
+        () => parseMapOfMaps<int>(
+          input,
+          logContext: 'test',
+          failOnPartial: true,
+          parseItem: (_, map) {
+            final Object? v = map['v'];
+            if (v is! int) {
+              throw const FormatException('Invalid payload');
+            }
+            return v;
+          },
+        ),
+        throwsA(isA<FormatException>()),
+      );
+    });
+
     test('failOnPartial throws on non-map entry instead of dropping', () {
       final Map<String, dynamic> input = <String, dynamic>{
         'a': <String, dynamic>{'v': 1},

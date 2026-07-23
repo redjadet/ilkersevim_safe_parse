@@ -136,9 +136,11 @@ List<T> parseMapOfMaps<T>(
           '$logContext parseItem returned null for ${entry.key}',
         );
       }
-    } on FormatException {
-      rethrow;
     } on Object catch (error, stackTrace) {
+      // Do not special-case FormatException: parseItem often throws it for bad
+      // rows, and lenient mode (failOnPartial: false) must skip those rows.
+      // When failOnPartial is true, wrap and rethrow below (including null
+      // parseItem FormatException thrown above).
       dev.log(
         '$logContext failed to parse item: ${entry.key}',
         name: 'safe_parse_utils',
