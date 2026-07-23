@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Fix `parseMapOfMaps` lenient mode: `FormatException` from `parseItem` is
+  skipped and logged again (0.1.3 rethrew it and broke skip-invalid callers).
+
 ## 0.1.3
 
 - Add `failOnPartial` to `parseMapOfMaps` so authoritative payloads can throw
