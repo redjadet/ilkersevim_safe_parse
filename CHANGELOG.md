@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3
+
+- Add `failOnPartial` to `parseMapOfMaps` so authoritative payloads can throw
+  `FormatException` instead of silently dropping bad entries (default remains
+  lenient for compatibility).
+- Log skipped non-map entries when dropping in lenient mode.
+
+
 ## 0.1.2
 
 - Explain how shared conversion rules simplify defensive parsing of dynamic
