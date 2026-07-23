@@ -124,5 +124,21 @@ void main() {
       );
       expect(out, orderedEquals(<int>[1]));
     });
+
+    test('failOnPartial throws on non-map entry instead of dropping', () {
+      final Map<String, dynamic> input = <String, dynamic>{
+        'a': <String, dynamic>{'v': 1},
+        'b': 'not-a-map',
+      };
+      expect(
+        () => parseMapOfMaps<int>(
+          input,
+          logContext: 'test',
+          failOnPartial: true,
+          parseItem: (_, map) => map['v'] as int?,
+        ),
+        throwsA(isA<FormatException>()),
+      );
+    });
   });
 }

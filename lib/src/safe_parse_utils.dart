@@ -81,12 +81,18 @@ bool boolFromDynamic(final dynamic value, {required final bool fallback}) =>
 /// Parses a map-of-maps (e.g. Realtime DB snapshot) into a list of [T] by
 /// calling [parseItem] for each map value.
 ///
-/// Skips non-map values and entries that throw or return null; logs parse
-/// failures with [logContext].
+/// Entries whose value is not a [Map], whose [parseItem] returns null, or that
+/// throw while parsing are skipped and logged with [logContext].
+///
+/// When [failOnPartial] is true, the first skipped/failed entry throws
+/// [FormatException] instead of continuing. Default remains lenient for
+/// backward compatibility — prefer `failOnPartial: true` for authoritative
+/// payloads where silent drops would corrupt state.
 List<T> parseMapOfMaps<T>(
   final Object? value, {
   required final T? Function(Object? key, Map<dynamic, dynamic> map) parseItem,
   required final String logContext,
+  final bool failOnPartial = false,
 }) {
   if (value == null) return <T>[];
   if (value is! Map) {
@@ -94,6 +100,11 @@ List<T> parseMapOfMaps<T>(
       '$logContext unexpected payload type: ${value.runtimeType}',
       name: 'safe_parse_utils',
     );
+    if (failOnPartial) {
+      throw FormatException(
+        '$logContext expected a JSON object, got ${value.runtimeType}',
+      );
+    }
     return <T>[];
   }
 
@@ -101,12 +112,32 @@ List<T> parseMapOfMaps<T>(
   final List<T> out = <T>[];
   for (final MapEntry<Object?, Object?> entry in data.entries) {
     final Object? v = entry.value;
-    if (v is! Map) continue;
+    if (v is! Map) {
+      dev.log(
+        '$logContext skipped non-map entry: ${entry.key} '
+        '(${v.runtimeType})',
+        name: 'safe_parse_utils',
+      );
+      if (failOnPartial) {
+        throw FormatException(
+          '$logContext entry ${entry.key} is not a map (${v.runtimeType})',
+        );
+      }
+      continue;
+    }
 
     try {
       final Map<dynamic, dynamic> itemMap = Map<dynamic, dynamic>.from(v);
       final T? item = parseItem(entry.key, itemMap);
-      if (item != null) out.add(item);
+      if (item != null) {
+        out.add(item);
+      } else if (failOnPartial) {
+        throw FormatException(
+          '$logContext parseItem returned null for ${entry.key}',
+        );
+      }
+    } on FormatException {
+      rethrow;
     } on Object catch (error, stackTrace) {
       dev.log(
         '$logContext failed to parse item: ${entry.key}',
@@ -114,6 +145,11 @@ List<T> parseMapOfMaps<T>(
         error: error,
         stackTrace: stackTrace,
       );
+      if (failOnPartial) {
+        throw FormatException(
+          '$logContext failed to parse item ${entry.key}: $error',
+        );
+      }
     }
   }
   return out;
