@@ -19,10 +19,10 @@ License: [Apache-2.0](LICENSE). Issues:
 
 ```yaml
 dependencies:
-  ilkersevim_safe_parse: ^0.1.5
+  ilkersevim_safe_parse: ^0.1.6
 ```
 
-Requires Dart `>=3.12.0`.
+Requires Dart `>=3.13.0`.
 
 ## Usage
 

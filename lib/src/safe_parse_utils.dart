@@ -8,20 +8,20 @@ library;
 import 'dart:developer' as dev;
 
 /// Returns [value] as [String] if it is a [String], otherwise null.
-String? stringFromDynamic(final dynamic value) => switch (value) {
+String? stringFromDynamic(dynamic value) => switch (value) {
   final String s => s,
   _ => null,
 };
 
 /// Returns trimmed [value] as [String], or null if not a string or empty.
-String? stringFromDynamicTrimmed(final dynamic value) {
+String? stringFromDynamicTrimmed(dynamic value) {
   if (value is! String) return null;
   final String trimmed = value.trim();
   return trimmed.isEmpty ? null : trimmed;
 }
 
 /// Returns [value] as [int] if possible (int, num, or parseable String).
-int? intFromDynamic(final dynamic value) => switch (value) {
+int? intFromDynamic(dynamic value) => switch (value) {
   null => null,
   final int v => v,
   final num v => v.toInt(),
@@ -30,7 +30,7 @@ int? intFromDynamic(final dynamic value) => switch (value) {
 };
 
 /// Returns [value] as [double], or [fallback] if null/not parseable.
-double doubleFromDynamic(final dynamic value, final double fallback) =>
+double doubleFromDynamic(dynamic value, double fallback) =>
     switch (value) {
       null => fallback,
       final num v => v.toDouble(),
@@ -42,7 +42,7 @@ double doubleFromDynamic(final dynamic value, final double fallback) =>
 ///
 /// Also returns null when [value] is a [Map] whose keys are not all [String]
 /// (never throws — safe-parse contract).
-Map<String, dynamic>? mapFromDynamic(final dynamic value) {
+Map<String, dynamic>? mapFromDynamic(dynamic value) {
   if (value is Map<String, dynamic>) return value;
   if (value is! Map) return null;
 
@@ -56,7 +56,7 @@ Map<String, dynamic>? mapFromDynamic(final dynamic value) {
 }
 
 /// Returns [value] as [List<dynamic>], or null if not a list.
-List<dynamic>? listFromDynamic(final dynamic value) => switch (value) {
+List<dynamic>? listFromDynamic(dynamic value) => switch (value) {
   final List<dynamic> list => list,
   _ => null,
 };
@@ -65,7 +65,7 @@ List<dynamic>? listFromDynamic(final dynamic value) => switch (value) {
 ///
 /// Accepted truthy values: `true`, non-zero numbers, `'true'`, `'1'`.
 /// Accepted falsy values: `false`, zero numbers, `'false'`, `'0'`.
-bool boolFromDynamic(final dynamic value, {required final bool fallback}) =>
+bool boolFromDynamic(dynamic value, {required bool fallback}) =>
     switch (value) {
       null => fallback,
       final bool v => v,
@@ -89,10 +89,10 @@ bool boolFromDynamic(final dynamic value, {required final bool fallback}) =>
 /// backward compatibility — prefer `failOnPartial: true` for authoritative
 /// payloads where silent drops would corrupt state.
 List<T> parseMapOfMaps<T>(
-  final Object? value, {
-  required final T? Function(Object? key, Map<dynamic, dynamic> map) parseItem,
-  required final String logContext,
-  final bool failOnPartial = false,
+  Object? value, {
+  required T? Function(Object? key, Map<dynamic, dynamic> map) parseItem,
+  required String logContext,
+  bool failOnPartial = false,
 }) {
   if (value == null) return <T>[];
   if (value is! Map) {
