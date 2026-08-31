@@ -2,7 +2,7 @@ name: ilkersevim_safe_parse
 description: >-
   Convert dynamic and JSON-like values into typed Dart values without crashes,
   using predictable null and fallback behavior.
-version: 0.1.4
+version: 0.1.5
 repository: https://github.com/redjadet/ilkersevim_safe_parse
 homepage: https://github.com/redjadet/ilkersevim_safe_parse
 issue_tracker: https://github.com/redjadet/ilkersevim_safe_parse/issues

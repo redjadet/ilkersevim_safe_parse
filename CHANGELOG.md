@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+
+- Sync README install caret with current release.
+
 ## 0.1.4
 
 - Fix `parseMapOfMaps` lenient mode: `FormatException` from `parseItem` is
