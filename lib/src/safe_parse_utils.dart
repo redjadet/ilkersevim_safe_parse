@@ -30,13 +30,12 @@ int? intFromDynamic(dynamic value) => switch (value) {
 };
 
 /// Returns [value] as [double], or [fallback] if null/not parseable.
-double doubleFromDynamic(dynamic value, double fallback) =>
-    switch (value) {
-      null => fallback,
-      final num v => v.toDouble(),
-      final String v => double.tryParse(v) ?? fallback,
-      _ => fallback,
-    };
+double doubleFromDynamic(dynamic value, double fallback) => switch (value) {
+  null => fallback,
+  final num v => v.toDouble(),
+  final String v => double.tryParse(v) ?? fallback,
+  _ => fallback,
+};
 
 /// Returns [value] as [Map<String, dynamic>], or null if not a map.
 ///
