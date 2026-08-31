@@ -21,7 +21,6 @@
   lenient for compatibility).
 - Log skipped non-map entries when dropping in lenient mode.
 
-
 ## 0.1.2
 
 - Explain how shared conversion rules simplify defensive parsing of dynamic
